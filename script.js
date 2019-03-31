@@ -1,6 +1,7 @@
 
 
-//******************************read data file*****************************//
+//******************************read 
+file*****************************//
 var gradesP = d3.json("classData.json");
 
 //*****************************make promise********************************//
@@ -56,7 +57,7 @@ var drawChart = function(d)
           .attr("transform","translate("+margins.left+","+margins.top+")");
      var colors = d3.scaleOrdinal(d3.schemeAccent);
       var students = plotLand.selectAll("g")
-          .data(data)
+          .data(d)
           .enter()
           .append("g")
           .attr("fill",function(d){return colors(d.name)})
@@ -82,7 +83,7 @@ var drawChart = function(d)
         .attr("transform","translate("+
         (width + margins.left) + "," + margins.top+")");
         var legendLines = legend.selectAll("g")
-            .data(data)
+            .data(d)
             .enter()
             .append("g")
             .classed("legendLines",true)
