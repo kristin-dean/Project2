@@ -13,58 +13,19 @@ function(err)
 {
   console.log(err);
 });
-
-var firstFunction = function(d) {
-  d[0].quizes.forEach(function(d) {d.type="quiz"});
-  d[0].final.forEach(function(d) {d.type="final"});
-  d[0].test.forEach(function(d) {d.type="test"});
-  d[0].homework.forEach(function(d) {d.type="homework"});
-  var finalG = d[0].final;
-  list2 = finalG.concat(d[0].homework);
-  list3 = list2.concat(d[0].quizes);
-  allGrades = list3.concat(d[0].test);
-  console.log(allGrades);
   
-  
-  
-//******************************read data file*****************************//
-var gradesP = d3.json("classData.json");
-
-//*****************************make promise********************************//
-gradesP.then(function(d)
-{
-  d[0].quizes.forEach(function(d)   {d.type = "quiz"}  )
-
-  console.log(d[0].quizes)
-},
-function(err)
-{
-  console.log(err);
-});
-
-/*
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-  </head>
-  <body>
-    <script>
-    var dataP = d3.json("gradeData.json");
-    dataP.then(function(data)
-    {
-        drawChart(data,300,500,"#svg1");
-        drawChart(data,500,800,"#svg2");
-        drawChart(data,800,500,"#svg3");
-    },
-    function(err)
-    {
-      console.log(err);
-    })
-  var drawChart = function(data,heights,widths,tag)
+var drawChart = function(d)
   {
+    d[0].quizes.forEach(function(d) {d.type="quiz"});
+    d[0].final.forEach(function(d) {d.type="final"});
+    d[0].test.forEach(function(d) {d.type="test"});
+    d[0].homework.forEach(function(d) {d.type="homework"});
+    var finalG = d[0].final;
+    list2 = finalG.concat(d[0].homework);
+    list3 = list2.concat(d[0].quizes);
+    allGrades = list3.concat(d[0].test);
+    console.log(allGrades);
+    
      var screen =
       {
         width:widths,
@@ -73,13 +34,15 @@ function(err)
       var svg = d3.select(tag)
         .attr("width",screen.width)
         .attr("height",screen.height);
+        
       var margins =
       {
         top:10,
         bottom:40,
         left:45,
         right:75
-      }
+      };
+      
       var width = screen.width - margins.left - margins.right;
       var height = screen.height - margins.top - margins.bottom;
       var xScale = d3.scaleLinear()
@@ -143,18 +106,7 @@ function(err)
           .call(yAxis)
           .attr("transform","translate("+(margins.left-20)+","
           + 5 +")");
-      }
-    </script>
-
-    <svg tag id = "svg1"></svg>
-    <hr />
-    <svg tag id ="svg2"></svg>
-    <hr />
-    <svg tag id = "svg3"></svg>
-  </body>
-</html>
-*/
-
-  
+      } 
   
 }
+
