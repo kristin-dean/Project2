@@ -29,13 +29,37 @@ var drawChart = function(d,penguin)
     allGrades.forEach(function(d) {d.percent=(d.grade / d.max)*100});
     console.log(allGrades);
 
+    var pengPics = d3.range(d.length)
+                     .map(function(x) {return d[x].picture;});
+
+    var penguinIsland = d3.select("body");
+
+    //******************** create the buttons **********************************//
+    penguinIsland.selectAll("img")
+               .data(pengPics)
+               .enter()
+               .append("img")
+               .attr("src", function(d,i) {
+                    console.log(d);
+                    return d})
+               .attr("alt", function(d,i) {
+                   return "Penguin " + i;})
+              .attr("id", function(d,i) {
+                   return i;})
+              .attr("height", 65)
+              .attr("width", 65)
+              .on("click", function(d,i){
+                   var order = d.id;
+                   updateChart(d,order);});
+
+
 var dayHeader = d3.select("h1");
 dayHeader.text("Semester Grades for Penguin " + penguin);
 
      var screen =
       {
-        width:1200,
-        height:650
+        width:1000,
+        height:450
       };
       var svg = d3.select("svg")
         .attr("width",screen.width)
@@ -158,8 +182,8 @@ var updateChart = function(d,penguin)
 
        var screen =
         {
-          width:1200,
-          height:650
+          width:1000,
+          height:450
         };
         var svg = d3.select("svg")
           .attr("width",screen.width)
