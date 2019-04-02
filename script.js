@@ -49,8 +49,7 @@ var drawChart = function(data,penguin)
                 .attr("width", 65)
                 .on("click", function(d,i){
                      var order = i;
-                     console.log(order);
-                     updateChart(data,order);});
+                     updateChart(data,order, plotLand, students);});
 
 var dayHeader = d3.select("h1");
 dayHeader.text("Semester Grades for Penguin " + penguin);
@@ -162,7 +161,7 @@ var gradeTypes = ['Quiz', 'Homework', 'Test', 'Final'];
 
 
 //**************************** UPDATE CHART ********************************//
-var updateChart = function(d,penguin)
+var updateChart = function(d,penguin, plotLand, students)
   {
       d[penguin].quizes.forEach(function(d) {d.type="Quiz"});
       d[penguin].final.forEach(function(d) {d.type="Final"});
@@ -208,22 +207,15 @@ var updateChart = function(d,penguin)
             .classed("plot",true)
             .attr("transform","translate("+margins.left+","+margins.top+")");
 
-        var students = plotLand.selectAll("#students")
-            .data(allGrades);
         students.selectAll("circle")
             .data(allGrades)
             .transition()
-            .each("start", function() {
-              d3.select(this)
-                .attr("fill", function(d) {
-                  return colors(d.type);})
+            .duration(500)
+            .attr("cx",function(d,i)
+            {
+              return xScale(d.day);
             })
-            .delay(function(d,i) {
-              return i / allGrades.length * 500;})
-            .attr("cx",function(d) {
-              return xScale(d.day);})
-            .attr("cy",function(d) {
-              return yScale(d.percent);})
+            .attr("cy",function(d){return yScale(d.percent);})
             .attr("r", function(d) {
               if (d.type == "Quiz") {
                 return 6;}
@@ -233,9 +225,8 @@ var updateChart = function(d,penguin)
                 return 12;}
               else if (d.type == "Final") {
                 return 15;}})
-            .each("end", function() {
-              d3.select(this)
-                .transition()});
+            .attr("fill", function(d) {
+              return colors(d.type);})
 
 
               var title = d3.selectAll("title");
