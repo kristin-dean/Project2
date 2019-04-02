@@ -16,42 +16,41 @@ function(err)
   console.log(err);
 });
 
-var drawChart = function(d,penguin)
+var drawChart = function(data,penguin)
   {
-    d[penguin].quizes.forEach(function(d) {d.type="Quiz"});
-    d[penguin].final.forEach(function(d) {d.type="Final"});
-    d[penguin].test.forEach(function(d) {d.type="Test"});
-    d[penguin].homework.forEach(function(d) {d.type="Homework"});
-    var finalG = d[penguin].final;
-    list2 = finalG.concat(d[penguin].homework);
-    list3 = list2.concat(d[penguin].quizes);
-    allGrades = list3.concat(d[penguin].test);
+    data[penguin].quizes.forEach(function(d) {d.type="Quiz"});
+    data[penguin].final.forEach(function(d) {d.type="Final"});
+    data[penguin].test.forEach(function(d) {d.type="Test"});
+    data[penguin].homework.forEach(function(d) {d.type="Homework"});
+    var finalG = data[penguin].final;
+    list2 = finalG.concat(data[penguin].homework);
+    list3 = list2.concat(data[penguin].quizes);
+    allGrades = list3.concat(data[penguin].test);
     allGrades.forEach(function(d) {d.percent=(d.grade / d.max)*100});
     console.log(allGrades);
 
-    var pengPics = d3.range(d.length)
-                     .map(function(x) {return d[x].picture;});
+    var pengPics = d3.range(data.length)
+                     .map(function(d) {return data[d].picture;});
 
     var penguinIsland = d3.select("body");
 
     //******************** create the buttons **********************************//
     penguinIsland.selectAll("img")
-               .data(pengPics)
-               .enter()
-               .append("img")
-               .attr("src", function(d,i) {
-                    console.log(d);
-                    return d})
-               .attr("alt", function(d,i) {
-                   return "Penguin " + i;})
-              .attr("id", function(d,i) {
-                   return i;})
-              .attr("height", 65)
-              .attr("width", 65)
-              .on("click", function(d,i){
-                   var order = d.id;
-                   updateChart(d,order);});
-
+                 .data(pengPics)
+                 .enter()
+                 .append("img")
+                 .attr("src", function(d,i) {
+                      return d})
+                 .attr("alt", function(d,i) {
+                     return "Penguin " + i;})
+                .attr("id", function(d,i) {
+                     return i;})
+                .attr("height", 65)
+                .attr("width", 65)
+                .on("click", function(d,i){
+                     var order = i;
+                     console.log(order);
+                     updateChart(data,order);});
 
 var dayHeader = d3.select("h1");
 dayHeader.text("Semester Grades for Penguin " + penguin);
@@ -162,7 +161,6 @@ var gradeTypes = ['Quiz', 'Homework', 'Test', 'Final'];
   }
 
 
-
 //**************************** UPDATE CHART ********************************//
 var updateChart = function(d,penguin)
   {
@@ -209,17 +207,23 @@ var updateChart = function(d,penguin)
         var plotLand = svg.selectAll("#plotLand")
             .classed("plot",true)
             .attr("transform","translate("+margins.left+","+margins.top+")");
+
         var students = plotLand.selectAll("#students")
-            .data(allGrades)
-            .transition();
+            .data(allGrades);
         students.selectAll("circle")
             .data(allGrades)
             .transition()
-            .attr("cx",function(d,i)
-            {
-              return xScale(d.day);
+            .each("start", function() {
+              d3.select(this)
+                .attr("fill", function(d) {
+                  return colors(d.type);})
             })
-            .attr("cy",function(d){return yScale(d.percent);})
+            .delay(function(d,i) {
+              return i / allGrades.length * 500;})
+            .attr("cx",function(d) {
+              return xScale(d.day);})
+            .attr("cy",function(d) {
+              return yScale(d.percent);})
             .attr("r", function(d) {
               if (d.type == "Quiz") {
                 return 6;}
@@ -229,8 +233,10 @@ var updateChart = function(d,penguin)
                 return 12;}
               else if (d.type == "Final") {
                 return 15;}})
-            .attr("fill", function(d) {
-              return colors(d.type);});
+            .each("end", function() {
+              d3.select(this)
+                .transition()});
+
 
               var title = d3.selectAll("title");
               title.remove()
@@ -239,6 +245,6 @@ var updateChart = function(d,penguin)
               .text(function(d)
                 {return "This "+d.type+" grade is a " + d.percent;});
 
-            var xAxis  = d3.axisBottom(xScale);
+          //  var xAxis  = d3.axisBottom(xScale);
 
 }
