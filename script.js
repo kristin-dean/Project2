@@ -6,8 +6,9 @@ var gradesP = d3.json("classData.json");
 //*****************************make promise********************************//
 gradesP.then(function(d)
 {
-  drawChart(d,0);
-  console.log("Initialization working.");
+  drawLines(d,0)
+  //drawChart(d,0);
+  //console.log("Initialization working.");
 //updateChart(d,5);
 //console.log("Update working.");
 },
@@ -15,6 +16,145 @@ function(err)
 {
   console.log(err);
 });
+
+var drawLines = function(data,penguin)
+{
+  /*
+  data[penguin].quizes.forEach(function(d) {d.type="Quiz"});
+  data[penguin].final.forEach(function(d) {d.type="Final"});
+  data[penguin].test.forEach(function(d) {d.type="Test"});
+  data[penguin].homework.forEach(function(d) {d.type="Homework"});
+  var finalG = data[penguin].final;
+  list2 = finalG.concat(data[penguin].homework);
+  list3 = list2.concat(data[penguin].quizes);
+  allGrades = list3.concat(data[penguin].test);
+  */
+
+
+  var screen =
+   {
+     width:1500,
+     height:450
+   };
+   var svg = d3.select("svg")
+     .attr("width",screen.width)
+     .attr("height",screen.height);
+
+   var margins =
+   {
+     top:10,
+     bottom:40,
+     left:45,
+     right:600
+   };
+
+
+
+
+   var width = screen.width - margins.left - margins.right;
+   var height = screen.height - margins.top - margins.bottom;
+
+    var xScale = d3.scaleLinear()
+                   .domain([0,data.length])
+                   .range([0,width]);
+
+    var yScale = d3.scaleLinear()
+                   .domain([0,100])
+                   .range([height,0]);
+
+
+                   var xAxis = d3.axisBottom(xScale);
+                         svg.append("g")
+                           .classed(xAxis,true)
+                           .call(xAxis)
+                           .attr("transform","translate("+margins.left+","
+                           +(margins.top+ height + 15)+")"
+                         );
+                   var yAxis = d3.axisLeft(yScale);
+                        svg.append("g")
+                           .classed(yAxis,true)
+                           .call(yAxis)
+                           .attr("transform","translate("+(margins.left-20)+","
+                           + 7 +")");
+
+
+
+      var svg = d3.select("svg")
+
+      var line = d3.line()
+        .curve(d3.curveCatmullRom)
+        .x(function(d,i)
+        {
+          return xScale(d.day)
+        }
+      )
+        .y(function(d)
+        {
+          return yScale(d.grade*10)
+        }
+      )
+      data.forEach(function(d,i)
+      {
+        svg.append("g")
+          .attr("classed","line")
+          .append("path")
+          .datum(data[i].quizes)
+          .attr("d",line)
+          .attr("stroke","grey")
+
+
+          .attr("fill","none")
+          .attr("id",function(d,i)
+
+          {
+            console.log("line"+i)
+            return "line"+i
+          })
+
+          .on("click",function(d)
+
+
+          {
+            d3.select(this).classed("hidden","true")
+          })
+      })
+
+      var line = d3.select("#line0")
+            .attr("stroke","red")
+            .attr("stroke-width","5")
+
+
+
+
+
+
+
+/*
+        svg.append("g")
+          .attr("classed","line")
+          .append("path")
+          .datum(data[5].quizes)
+          .attr("d",line)
+          .attr("stroke","grey")
+          .attr("fill","none")
+          .on("click",function(d)
+          {
+            d3.select(this).classed("hidden","true")
+          }
+
+
+
+        )
+*/
+}
+
+
+
+
+
+
+
+
 
 var drawChart = function(data,penguin)
   {
@@ -27,7 +167,7 @@ var drawChart = function(data,penguin)
     list3 = list2.concat(data[penguin].quizes);
     allGrades = list3.concat(data[penguin].test);
     allGrades.forEach(function(d) {d.percent=(d.grade / d.max)*100});
-    console.log(allGrades);
+    console.log(allGrades)
 
     var pengPics = d3.range(data.length)
                      .map(function(d) {return data[d].picture;});
@@ -56,7 +196,7 @@ dayHeader.text("Semester Grades for Penguin " + penguin);
 
      var screen =
       {
-        width:1000,
+        width:1500,
         height:450
       };
       var svg = d3.select("svg")
@@ -68,7 +208,7 @@ dayHeader.text("Semester Grades for Penguin " + penguin);
         top:10,
         bottom:40,
         left:45,
-        right:145
+        right:600
       };
 
       var width = screen.width - margins.left - margins.right;
@@ -179,7 +319,7 @@ var updateChart = function(d,penguin, plotLand, students)
 
        var screen =
         {
-          width:1000,
+          width:1500,
           height:450
         };
         var svg = d3.select("svg")
@@ -191,7 +331,7 @@ var updateChart = function(d,penguin, plotLand, students)
           top:10,
           bottom:40,
           left:45,
-          right:145
+          right:600
         };
 
         var width = screen.width - margins.left - margins.right;
