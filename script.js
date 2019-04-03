@@ -45,7 +45,7 @@ var drawLines = function(data,penguin)
      top:10,
      bottom:40,
      left:45,
-     right:600
+     right:10
    };
 
 
@@ -55,7 +55,7 @@ var drawLines = function(data,penguin)
    var height = screen.height - margins.top - margins.bottom;
 
     var xScale = d3.scaleLinear()
-                   .domain([0,data.length])
+                   .domain([0,41])
                    .range([0,width]);
 
     var yScale = d3.scaleLinear()
@@ -85,7 +85,7 @@ var drawLines = function(data,penguin)
         .curve(d3.curveCatmullRom)
         .x(function(d,i)
         {
-          return xScale(d.day)
+          return xScale(d.day)+20
         }
       )
         .y(function(d)
@@ -207,7 +207,7 @@ dayHeader.text("Semester Grades for Penguin " + penguin);
       {
         top:10,
         bottom:40,
-        left:45,
+        left:50,
         right:600
       };
 
