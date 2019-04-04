@@ -30,11 +30,13 @@ var drawLines = function(data,penguin)
   allGrades = list3.concat(data[penguin].test);
   */
 
+  buttons = d3.selectAll("button")
+  buttons.remove()
 
   var screen =
    {
      width:1500,
-     height:450
+     height:700
    };
    var svg = d3.select("svg")
      .attr("width",screen.width)
@@ -45,10 +47,12 @@ var drawLines = function(data,penguin)
      top:10,
      bottom:40,
      left:45,
-     right:10
+     right:20
    };
 
 
+       var circles = d3.selectAll("circle")
+       circles.remove()
 
 
    var width = screen.width - margins.left - margins.right;
@@ -90,7 +94,7 @@ var drawLines = function(data,penguin)
       )
         .y(function(d)
         {
-          return yScale(d.grade*10)
+          return yScale(d.grade*10)+10
         }
       )
       data.forEach(function(d,i)
@@ -101,19 +105,12 @@ var drawLines = function(data,penguin)
           .datum(data[i].quizes)
           .attr("d",line)
           .attr("stroke","grey")
+          .attr("class","lines")
 
 
           .attr("fill","none")
-          .attr("id",function(d,i)
-
-          {
-            console.log("line"+i)
-            return "line"+i
-          })
-
+          .attr("id","line"+i)
           .on("click",function(d)
-
-
           {
             d3.select(this).classed("hidden","true")
           })
@@ -122,6 +119,63 @@ var drawLines = function(data,penguin)
       var line = d3.select("#line0")
             .attr("stroke","red")
             .attr("stroke-width","5")
+
+      var penguinPictures = d3.selectAll("img");
+      penguinPictures.remove();
+
+            var pengPics = d3.range(data.length)
+                             .map(function(d) {return data[d].picture;});
+
+            var penguinIsland = d3.select("#buttons");
+
+            //******************** create the buttons **********************************//
+            penguinIsland.selectAll("img")
+                         .data(pengPics)
+                         .enter()
+                         .append("img")
+                         .attr("src", function(d,i) {
+                              return d})
+                         .attr("alt", function(d,i) {
+                             return "Penguin " + i;})
+                        .attr("id", function(d,i) {
+                             return "button"+i;})
+
+                        .attr("height", 65)
+                        .attr("width", 65)
+                        .on("mouseover",function(d,i){
+                        line = d3.select("#line"+i)
+                        line.attr("stroke","red")
+                        line.attr("stroke-width","5")
+                        if(i != 0)
+                        {
+                          line0 = d3.select("#line0")
+                          line0.attr("stroke","grey")
+                          line0.attr("stroke-width","1")
+                        }
+
+
+                        })
+                        .on("mouseout",function(d,i)
+                        {
+                          var line = d3.select("#line"+i)
+                          line.attr("stroke","grey")
+                          line.attr("stroke-width","1")
+                          var starter = d3.select("#button0")
+                              .attr("border-width","0px")
+                        })
+                        .on("click",function(d,i)
+                        {
+                            drawChart(data,i)
+                        }
+
+
+
+
+
+                      )
+
+                      var button = d3.select("#button0")
+                          .style("stroke","green")
 
 
 
@@ -158,6 +212,17 @@ var drawLines = function(data,penguin)
 
 var drawChart = function(data,penguin)
   {
+    var prevButtons = d3.selectAll("button");
+    prevButtons.remove();
+         var body = d3.select("body")
+         body.append("button")
+         .text("go back to line graph")
+         .on("click",function(d){drawLines(data,0)})
+
+
+    var lines = d3.selectAll(".lines")
+    lines.remove()
+
     data[penguin].quizes.forEach(function(d) {d.type="Quiz"});
     data[penguin].final.forEach(function(d) {d.type="Final"});
     data[penguin].test.forEach(function(d) {d.type="Test"});
@@ -167,7 +232,7 @@ var drawChart = function(data,penguin)
     list3 = list2.concat(data[penguin].quizes);
     allGrades = list3.concat(data[penguin].test);
     allGrades.forEach(function(d) {d.percent=(d.grade / d.max)*100});
-    console.log(allGrades)
+
 
     var pengPics = d3.range(data.length)
                      .map(function(d) {return data[d].picture;});
@@ -175,6 +240,7 @@ var drawChart = function(data,penguin)
     var penguinIsland = d3.select("body");
 
     //******************** create the buttons **********************************//
+
     penguinIsland.selectAll("img")
                  .data(pengPics)
                  .enter()
@@ -191,13 +257,14 @@ var drawChart = function(data,penguin)
                      var order = i;
                      updateChart(data,order, plotLand, students);});
 
+
 var dayHeader = d3.select("h1");
 dayHeader.text("Semester Grades for Penguin " + penguin);
 
      var screen =
       {
         width:1500,
-        height:450
+        height:700
       };
       var svg = d3.select("svg")
         .attr("width",screen.width)
@@ -207,8 +274,8 @@ dayHeader.text("Semester Grades for Penguin " + penguin);
       {
         top:10,
         bottom:40,
-        left:50,
-        right:600
+        left:45,
+        right:20
       };
 
       var width = screen.width - margins.left - margins.right;
@@ -252,7 +319,7 @@ dayHeader.text("Semester Grades for Penguin " + penguin);
         .append("title")
         .text(function(d)
           {return "This "+d.type+" grade is a " + d.percent;});
-
+/*
           var xAxis  = d3.axisBottom(xScale);
 
         svg.append("g")
@@ -261,6 +328,8 @@ dayHeader.text("Semester Grades for Penguin " + penguin);
           .attr("transform","translate("+margins.left+","
           +(margins.top+ height + 15)+")"
         );
+
+*/
 /**************************** LEGEND *************************************/
 var gradeTypes = ['Quiz', 'Homework', 'Test', 'Final'];
 
@@ -291,18 +360,30 @@ var gradeTypes = ['Quiz', 'Homework', 'Test', 'Final'];
               .text(function(d){return d;});
 
 //************************* Y AXIS ******************************************//
+/*
       var yAxis  = d3.axisLeft(yScale);
         svg.append("g")
           .classed(yAxis,true)
           .call(yAxis)
           .attr("transform","translate("+(margins.left-20)+","
+
           + 7 +")");
+*/
+      var penguins = d3.selectAll("img")
+      .on("click",function(d,i)
+      {
+        updateChart(data,i,plotLand,students)
+      })
+
+
+
   }
 
 
 //**************************** UPDATE CHART ********************************//
 var updateChart = function(d,penguin, plotLand, students)
   {
+
       d[penguin].quizes.forEach(function(d) {d.type="Quiz"});
       d[penguin].final.forEach(function(d) {d.type="Final"});
       d[penguin].test.forEach(function(d) {d.type="Test"});
@@ -312,7 +393,6 @@ var updateChart = function(d,penguin, plotLand, students)
       list3 = list2.concat(d[penguin].quizes);
       allGrades = list3.concat(d[penguin].test);
       allGrades.forEach(function(d) {d.percent=(d.grade / d.max)*100});
-      console.log(allGrades);
 
       var dayHeader = d3.select("h1");
       dayHeader.text("Semester Grades for Penguin " + penguin);
@@ -320,7 +400,7 @@ var updateChart = function(d,penguin, plotLand, students)
        var screen =
         {
           width:1500,
-          height:450
+          height:700
         };
         var svg = d3.select("svg")
           .attr("width",screen.width)
@@ -331,7 +411,7 @@ var updateChart = function(d,penguin, plotLand, students)
           top:10,
           bottom:40,
           left:45,
-          right:600
+          right:20
         };
 
         var width = screen.width - margins.left - margins.right;
@@ -350,7 +430,7 @@ var updateChart = function(d,penguin, plotLand, students)
         students.selectAll("circle")
             .data(allGrades)
             .transition()
-            .duration(500)
+            .duration(700)
             .attr("cx",function(d,i)
             {
               return xScale(d.day);
@@ -377,5 +457,11 @@ var updateChart = function(d,penguin, plotLand, students)
                 {return "This "+d.type+" grade is a " + d.percent;});
 
           //  var xAxis  = d3.axisBottom(xScale);
+
+
+
+
+
+
 
 }
