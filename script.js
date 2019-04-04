@@ -94,15 +94,23 @@ var drawLines = function(data,penguin)
       )
         .y(function(d)
         {
-          return yScale(d.grade*10)+10
+          return yScale(d.percent)
         }
       )
+
+      var findingGrades = function(student,index,data) {
+        var quizzes = data[index].quizes;
+        var finals = data[index].final;
+        var theseGrades = quizzes.concat(finals);
+        theseGrades.forEach(function(d) {d.percent=(d.grade / d.max)*100});
+        return theseGrades;}
+
       data.forEach(function(d,i)
       {
         svg.append("g")
           .attr("classed","line")
           .append("path")
-          .datum(data[i].quizes)
+          .datum(findingGrades(d,i,data))
           .attr("d",line)
           .attr("stroke","grey")
           .attr("class","lines")
