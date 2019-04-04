@@ -415,7 +415,7 @@ var updateChart = function(d,penguin, plotLand, students)
 
        var screen =
         {
-          width:15200,
+          width:1200,
           height:600
         };
         var svg = d3.select("svg")
