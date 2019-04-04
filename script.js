@@ -94,7 +94,7 @@ var drawLines = function(data,penguin)
       )
         .y(function(d)
         {
-          return yScale(d.percent)
+          return yScale(d.percent)+12
         }
       )
 
