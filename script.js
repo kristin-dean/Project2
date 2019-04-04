@@ -226,7 +226,7 @@ var drawChart = function(data,penguin)
     prevButtons.remove();
          var body = d3.select("body")
          body.append("button")
-         .text("go back to line graph")
+         .text("Return to Line Chart")
          .on("click",function(d){drawLines(data,0)})
 
 
