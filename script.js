@@ -32,6 +32,9 @@ var drawLines = function(data,penguin)
 var dayHeader = d3.select("h3");
 dayHeader.text("Hover or Select Penguins to See Individual Data");
   
+  var dayHeader = d3.select("h1");
+  dayHeader.text("Class Grades");
+  
   buttons = d3.selectAll("button")
   buttons.remove()
 
