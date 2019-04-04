@@ -41,7 +41,7 @@ dayHeader.text("Hover or Select Penguins to See Individual Data");
   var screen =
    {
      width:1200,
-     height:600
+     height:550
    };
    var svg = d3.select("svg")
      .attr("width",screen.width)
@@ -280,7 +280,7 @@ dayHeader.text("Hover over grade points to see percent scores.");
      var screen =
       {
         width:1200,
-        height:600
+        height:550
       };
       var svg = d3.select("svg")
         .attr("width",screen.width)
@@ -416,7 +416,7 @@ var updateChart = function(d,penguin, plotLand, students)
        var screen =
         {
           width:1200,
-          height:600
+          height:550
         };
         var svg = d3.select("svg")
           .attr("width",screen.width)
