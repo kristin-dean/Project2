@@ -272,7 +272,10 @@ var drawChart = function(data,penguin)
 
 
 var dayHeader = d3.select("h3");
-dayHeader.text("Semester Grades for Penguin " + penguin);
+dayHeader.text("");
+    
+  var dayHeader = d3.select("h1");
+  dayHeader.text("Semester Grades for Penguin " + penguin);
 
      var screen =
       {
