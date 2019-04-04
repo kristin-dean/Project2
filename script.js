@@ -29,7 +29,9 @@ var drawLines = function(data,penguin)
   list3 = list2.concat(data[penguin].quizes);
   allGrades = list3.concat(data[penguin].test);
   */
-
+var dayHeader = d3.select("h3");
+dayHeader.text("Hover or Select Penguins to See Individual Data");
+  
   buttons = d3.selectAll("button")
   buttons.remove()
 
@@ -266,7 +268,7 @@ var drawChart = function(data,penguin)
                      updateChart(data,order, plotLand, students);});
 
 
-var dayHeader = d3.select("h1");
+var dayHeader = d3.select("h3");
 dayHeader.text("Semester Grades for Penguin " + penguin);
 
      var screen =
