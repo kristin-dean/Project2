@@ -7,10 +7,6 @@ var gradesP = d3.json("classData.json");
 gradesP.then(function(d)
 {
   drawLines(d,0)
-  //drawChart(d,0);
-  //console.log("Initialization working.");
-//updateChart(d,5);
-//console.log("Update working.");
 },
 function(err)
 {
@@ -19,24 +15,18 @@ function(err)
 
 var drawLines = function(data,penguin)
 {
-  /*
-  data[penguin].quizes.forEach(function(d) {d.type="Quiz"});
-  data[penguin].final.forEach(function(d) {d.type="Final"});
-  data[penguin].test.forEach(function(d) {d.type="Test"});
-  data[penguin].homework.forEach(function(d) {d.type="Homework"});
-  var finalG = data[penguin].final;
-  list2 = finalG.concat(data[penguin].homework);
-  list3 = list2.concat(data[penguin].quizes);
-  allGrades = list3.concat(data[penguin].test);
-  */
+
 var dayHeader = d3.select("h3");
 dayHeader.text("Hover or Select Penguins to See Individual Data");
-  
+
   var dayHeader = d3.select("h1");
   dayHeader.text("Class Grades");
-  
+
   buttons = d3.selectAll("button")
   buttons.remove()
+
+  var legendBoxes = d3.select("#scatterLegend");
+  legendBoxes.remove();
 
   var screen =
    {
@@ -44,7 +34,7 @@ dayHeader.text("Hover or Select Penguins to See Individual Data");
      height:550
    };
    var svg = d3.select("svg")
-     .attr("width",screen.width)
+     .attr("width",screen.width + 107)
      .attr("height",screen.height);
 
    var margins =
@@ -273,7 +263,7 @@ var drawChart = function(data,penguin)
 
 var dayHeader = d3.select("h3");
 dayHeader.text("Hover over grade points to see percent scores.");
-    
+
   var dayHeader = d3.select("h1");
   dayHeader.text("Semester Grades for Penguin " + penguin);
 
@@ -283,7 +273,7 @@ dayHeader.text("Hover over grade points to see percent scores.");
         height:550
       };
       var svg = d3.select("svg")
-        .attr("width",screen.width)
+        .attr("width",screen.width + 107)
         .attr("height",screen.height);
 
       var margins =
@@ -331,7 +321,11 @@ dayHeader.text("Hover over grade points to see percent scores.");
             else if (d.type == "Final") {
               return 15;}})
           .attr("fill", function(d) {
-            return colors(d.type);})
+            if (colors(d.type) == "#e41a1c") {
+              return "orange"; }
+            else {
+              return colors(d.type);
+            };})
         .append("title")
         .text(function(d)
           {return "This "+d.type+" grade is a " + d.percent;});
@@ -351,8 +345,9 @@ var gradeTypes = ['Quiz', 'Homework', 'Test', 'Final'];
 
       var legend = svg.append("g")
         .classed("legend",true)
+        .attr("id", "scatterLegend")
         .attr("transform","translate("+
-        (width + margins.left) + "," + margins.top+")");
+        width + "," + margins.top+")");
         var legendLines = legend.selectAll("g")
             .data(gradeTypes)
             .enter()
@@ -360,7 +355,7 @@ var gradeTypes = ['Quiz', 'Homework', 'Test', 'Final'];
             .classed("legendLines",true)
             .attr("transform",function(d,i)
             {
-              return "translate(" + 50 + "," + (i*20 +5) +")";}
+              return "translate(" + 80 + "," + (i*20 +5) +")";}
           )
         legendLines.append("rect")
                 .attr("x", 0)
@@ -368,7 +363,11 @@ var gradeTypes = ['Quiz', 'Homework', 'Test', 'Final'];
                 .attr("width", 15)
                 .attr("height", 15)
                 .attr("fill", function(d) {
-                  return colors(d);});
+                  if (colors(d) == "#e41a1c") {
+                    return "orange"; }
+                  else {
+                    return colors(d);
+                  };});
 
         legendLines.append("text")
               .attr("x",20)
@@ -419,7 +418,7 @@ var updateChart = function(d,penguin, plotLand, students)
           height:550
         };
         var svg = d3.select("svg")
-          .attr("width",screen.width)
+          .attr("width",screen.width + 107)
           .attr("height",screen.height);
 
         var margins =
@@ -462,7 +461,11 @@ var updateChart = function(d,penguin, plotLand, students)
               else if (d.type == "Final") {
                 return 15;}})
             .attr("fill", function(d) {
-              return colors(d.type);})
+              if (colors(d.type) == "#e41a1c") {
+                return "orange"; }
+              else {
+                return colors(d.type);
+              };});
 
 
               var title = d3.selectAll("title");
