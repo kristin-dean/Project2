@@ -21,9 +21,7 @@ img:hover
 
 svg
 {
-    display:block;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 20px;
 }
 
 #buttons
