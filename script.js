@@ -146,6 +146,12 @@ dayHeader.text("Hover or Select Penguins to See Individual Data");
                         .attr("height", 65)
                         .attr("width", 65)
                         .on("mouseover",function(d,i){
+                        if(i ==0)
+                        {
+                          var starter = d3.select("#button0")
+                                .style("border-width","8px")
+                        }
+
                         line = d3.select("#line"+i)
                         line.attr("stroke","red")
                         line.attr("stroke-width","5")
@@ -154,6 +160,9 @@ dayHeader.text("Hover or Select Penguins to See Individual Data");
                           line0 = d3.select("#line0")
                           line0.attr("stroke","grey")
                           line0.attr("stroke-width","1")
+
+
+
                         }
 
 
@@ -164,7 +173,7 @@ dayHeader.text("Hover or Select Penguins to See Individual Data");
                           line.attr("stroke","grey")
                           line.attr("stroke-width","1")
                           var starter = d3.select("#button0")
-                              .attr("border-width","0px")
+                              .style("border-width","0px")
                         })
                         .on("click",function(d,i)
                         {
