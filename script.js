@@ -34,7 +34,7 @@ dayHeader.text("Hover or Select Penguins to See Individual Data");
      height:550
    };
    var svg = d3.select("svg")
-     .attr("width",screen.width + 107)
+     .attr("width",screen.width + 147)
      .attr("height",screen.height);
 
    var margins =
@@ -282,7 +282,7 @@ dayHeader.text("Hover over grade points to see percent scores.");
         height:550
       };
       var svg = d3.select("svg")
-        .attr("width",screen.width + 107)
+        .attr("width",screen.width + 147)
         .attr("height",screen.height);
 
       var margins =
@@ -364,7 +364,7 @@ var gradeTypes = ['Quiz', 'Homework', 'Test', 'Final'];
             .classed("legendLines",true)
             .attr("transform",function(d,i)
             {
-              return "translate(" + 80 + "," + (i*20 +5) +")";}
+              return "translate(" + 120 + "," + (i*20 +5) +")";}
           )
         legendLines.append("rect")
                 .attr("x", 0)
@@ -427,7 +427,7 @@ var updateChart = function(d,penguin, plotLand, students)
           height:550
         };
         var svg = d3.select("svg")
-          .attr("width",screen.width + 107)
+          .attr("width",screen.width + 147)
           .attr("height",screen.height);
 
         var margins =
@@ -483,12 +483,6 @@ var updateChart = function(d,penguin, plotLand, students)
               .append("title")
               .text(function(d)
                 {return "This "+d.type+" grade is a " + d.percent;});
-
-          //  var xAxis  = d3.axisBottom(xScale);
-
-
-
-
 
 
 
