@@ -161,8 +161,8 @@ dayHeader.text("Hover or Select Penguins to See Individual Data");
                           line0.attr("stroke","grey")
                           line0.attr("stroke-width","1")
 
-
-
+                          button = d3.select("#button0")
+                              .style("border-width","0px")
                         }
 
 
