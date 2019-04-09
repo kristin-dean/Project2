@@ -13,6 +13,8 @@ function(err)
   console.log(err);
 });
 
+
+//*****************************draw class lines function********************************//
 var drawLines = function(data,penguin)
 {
 
@@ -53,6 +55,7 @@ dayHeader.text("Hover or Select Penguins to See Individual Data");
    var width = screen.width - margins.left - margins.right;
    var height = screen.height - margins.top - margins.bottom;
 
+  //*****************************create scales and axes********************************//
     var xScale = d3.scaleLinear()
                    .domain([0,41])
                    .range([0,width]);
@@ -77,7 +80,7 @@ dayHeader.text("Hover or Select Penguins to See Individual Data");
                            + 7 +")");
 
 
-
+//*****************************draw the lines for each student ********************************//
       var svg = d3.select("svg")
 
       var line = d3.line()
@@ -123,6 +126,7 @@ dayHeader.text("Hover or Select Penguins to See Individual Data");
             .attr("stroke","red")
             .attr("stroke-width","5")
 
+      //*****************************remove old buttons ********************************//
       var penguinPictures = d3.selectAll("img");
       penguinPictures.remove();
 
@@ -131,7 +135,7 @@ dayHeader.text("Hover or Select Penguins to See Individual Data");
 
             var penguinIsland = d3.select("#buttons");
 
-            //******************** create the buttons **********************************//
+            //******************** create new buttons **********************************//
             penguinIsland.selectAll("img")
                          .data(pengPics)
                          .enter()
@@ -151,7 +155,8 @@ dayHeader.text("Hover or Select Penguins to See Individual Data");
                           var starter = d3.select("#button0")
                                 .style("border-width","8px")
                         }
-
+              
+//*****************************select a line to show interactivity********************************//
                         line = d3.select("#line"+i)
                         line.attr("stroke","red")
                         line.attr("stroke-width","5")
@@ -179,49 +184,15 @@ dayHeader.text("Hover or Select Penguins to See Individual Data");
                         {
                             drawChart(data,i)
                         }
-
-
-
-
-
                       )
 
                       var button = d3.select("#button0")
                           .style("stroke","green")
 
-
-
-
-
-
-
-/*
-        svg.append("g")
-          .attr("classed","line")
-          .append("path")
-          .datum(data[5].quizes)
-          .attr("d",line)
-          .attr("stroke","grey")
-          .attr("fill","none")
-          .on("click",function(d)
-          {
-            d3.select(this).classed("hidden","true")
-          }
-
-
-
-        )
-*/
 }
 
 
-
-
-
-
-
-
-
+//*****************************draw scatterplot for individual student********************************//
 var drawChart = function(data,penguin)
   {
     var prevButtons = d3.selectAll("button");
@@ -231,10 +202,11 @@ var drawChart = function(data,penguin)
          .text("Return to Line Chart")
          .on("click",function(d){drawLines(data,0)})
 
-
+//*****************************remove the old lines********************************//
     var lines = d3.selectAll(".lines")
     lines.remove()
 
+ //*****************************manipulate data********************************//
     data[penguin].quizes.forEach(function(d) {d.type="Quiz"});
     data[penguin].final.forEach(function(d) {d.type="Final"});
     data[penguin].test.forEach(function(d) {d.type="Test"});
@@ -251,7 +223,7 @@ var drawChart = function(data,penguin)
 
     var penguinIsland = d3.select("body");
 
-    //******************** create the buttons **********************************//
+    //******************** create buttons again**********************************//
 
     penguinIsland.selectAll("img")
                  .data(pengPics)
@@ -269,7 +241,7 @@ var drawChart = function(data,penguin)
                      var order = i;
                      updateChart(data,order, plotLand, students);});
 
-
+//*****************************update HTML headers********************************//
 var dayHeader = d3.select("h3");
 dayHeader.text("Hover over grade points to see percent scores.");
 
@@ -292,7 +264,8 @@ dayHeader.text("Hover over grade points to see percent scores.");
         left:45,
         right:20
       };
-
+    
+//*****************************create groups to allow plots********************************//
       var width = screen.width - margins.left - margins.right;
       var height = screen.height - margins.top - margins.bottom;
       var colors = d3.scaleOrdinal(d3.schemeSet1);
@@ -311,6 +284,7 @@ dayHeader.text("Hover over grade points to see percent scores.");
           .data(allGrades)
           .enter()
           .append("g")
+  //*****************************draw the circles for each grade********************************//
       students.selectAll("circle")
           .data(allGrades)
           .enter()
@@ -338,17 +312,7 @@ dayHeader.text("Hover over grade points to see percent scores.");
         .append("title")
         .text(function(d)
           {return "This "+d.type+" grade is a " + d.percent;});
-/*
-          var xAxis  = d3.axisBottom(xScale);
 
-        svg.append("g")
-          .classed(xAxis,true)
-          .call(xAxis)
-          .attr("transform","translate("+margins.left+","
-          +(margins.top+ height + 15)+")"
-        );
-
-*/
 /**************************** LEGEND *************************************/
 var gradeTypes = ['Quiz', 'Homework', 'Test', 'Final'];
 
@@ -383,16 +347,7 @@ var gradeTypes = ['Quiz', 'Homework', 'Test', 'Final'];
               .attr("y",function(d,i){return i*20+14;})
               .text(function(d){return d;});
 
-//************************* Y AXIS ******************************************//
-/*
-      var yAxis  = d3.axisLeft(yScale);
-        svg.append("g")
-          .classed(yAxis,true)
-          .call(yAxis)
-          .attr("transform","translate("+(margins.left-20)+","
-
-          + 7 +")");
-*/
+//****************change button onclicks to call updateChart function*****************//
       var penguins = d3.selectAll("img")
       .on("click",function(d,i)
       {
@@ -404,10 +359,11 @@ var gradeTypes = ['Quiz', 'Homework', 'Test', 'Final'];
   }
 
 
+
 //**************************** UPDATE CHART ********************************//
 var updateChart = function(d,penguin, plotLand, students)
   {
-
+//*****************************manipulate data********************************//
       d[penguin].quizes.forEach(function(d) {d.type="Quiz"});
       d[penguin].final.forEach(function(d) {d.type="Final"});
       d[penguin].test.forEach(function(d) {d.type="Test"});
@@ -438,6 +394,7 @@ var updateChart = function(d,penguin, plotLand, students)
           right:20
         };
 
+    //*****************************re-establish scales********************************//
         var width = screen.width - margins.left - margins.right;
         var height = screen.height - margins.top - margins.bottom;
         var colors = d3.scaleOrdinal(d3.schemeSet1);
@@ -450,7 +407,7 @@ var updateChart = function(d,penguin, plotLand, students)
         var plotLand = svg.selectAll("#plotLand")
             .classed("plot",true)
             .attr("transform","translate("+margins.left+","+margins.top+")");
-
+//*****************************update every circle for new data********************************//
         students.selectAll("circle")
             .data(allGrades)
             .transition()
@@ -476,7 +433,7 @@ var updateChart = function(d,penguin, plotLand, students)
                 return colors(d.type);
               };});
 
-
+//*****************************add tooltips*******************************//
               var title = d3.selectAll("title");
               title.remove()
               svg.selectAll("circle")
